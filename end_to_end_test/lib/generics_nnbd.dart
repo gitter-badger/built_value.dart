@@ -11,7 +11,7 @@ part 'generics_nnbd.g.dart';
 
 abstract class GenericValue<T>
     implements Built<GenericValue<T>, GenericValueBuilder<T>> {
-  static Serializer<GenericValue<Object>> get serializer =>
+  static Serializer<GenericValue<Object?>> get serializer =>
       _$genericValueSerializer;
 
   T get value;
@@ -20,6 +20,25 @@ abstract class GenericValue<T>
       _$GenericValue<T>;
   factory GenericValue.of(T value) => _$GenericValue._(value: value);
   GenericValue._();
+}
+
+abstract class InitializeGenericValue<T>
+    implements
+        Built<InitializeGenericValue<T>, InitializeGenericValueBuilder<T>> {
+  static void _initializeBuilder<T>(InitializeGenericValueBuilder<T> b) {
+    if (T == int) {
+      b.value = 3 as T;
+    }
+  }
+
+  T get value;
+
+  factory InitializeGenericValue(
+          [Function(InitializeGenericValueBuilder<T>) updates]) =
+      _$InitializeGenericValue<T>;
+  factory InitializeGenericValue.of(T value) =>
+      _$InitializeGenericValue._(value: value);
+  InitializeGenericValue._();
 }
 
 abstract class BoundGenericValue<T extends num>
@@ -37,7 +56,7 @@ abstract class BoundGenericValue<T extends num>
 abstract class CollectionGenericValue<T>
     implements
         Built<CollectionGenericValue<T>, CollectionGenericValueBuilder<T>> {
-  static Serializer<CollectionGenericValue<Object>> get serializer =>
+  static Serializer<CollectionGenericValue<Object?>> get serializer =>
       _$collectionGenericValueSerializer;
 
   BuiltList<T> get values;
@@ -60,6 +79,33 @@ abstract class GenericContainer
   factory GenericContainer([void Function(GenericContainerBuilder) updates]) =
       _$GenericContainer;
   GenericContainer._();
+}
+
+// Check generation for `strict_raw_types`.
+abstract class DynamicGenericContainer
+    implements Built<DynamicGenericContainer, DynamicGenericContainerBuilder> {
+  Generic<dynamic> get foo;
+
+  factory DynamicGenericContainer(
+          [void Function(DynamicGenericContainerBuilder) updates]) =
+      _$DynamicGenericContainer;
+  DynamicGenericContainer._();
+}
+
+abstract class PassthroughGenericContainer<T>
+    implements
+        Built<PassthroughGenericContainer<T>,
+            PassthroughGenericContainerBuilder<T>> {
+  static Serializer<PassthroughGenericContainer<Object?>> get serializer =>
+      _$passthroughGenericContainerSerializer;
+
+  GenericValue<T> get genericValue;
+  CollectionGenericValue<T> get collectionGenericValue;
+
+  factory PassthroughGenericContainer(
+          [void Function(PassthroughGenericContainerBuilder<T>) updates]) =
+      _$PassthroughGenericContainer<T>;
+  PassthroughGenericContainer._();
 }
 
 abstract class NestedGenericContainer

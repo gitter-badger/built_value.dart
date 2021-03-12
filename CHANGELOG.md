@@ -1,5 +1,18 @@
 # Changelog
 
+# 8.0.2
+
+- Bump versions of `analyzer`, `quiver`.
+
+# 8.0.1
+
+- Update `chat` example to webdev.
+- Allow nulls when serializing/deserializing for better JSON interop.
+- Fix generation bugs around enum wire name and polymorphism.
+- Fix generation with generics for analysis with `strict-raw-types`.
+- Add test coverage around generation for generic serialization.
+- Add test coverage around initialization with generics.
+
 # 8.0.0
 
 - Stable null safe release.
